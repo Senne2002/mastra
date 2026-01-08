@@ -1,4 +1,18 @@
+import { MCPClient } from "@mastra/mcp";
 import { Agent } from "@mastra/core/agent";
+import path from "path";
+
+const codePath = path.join(process.cwd(), "../../code");
+
+const mcp = new MCPClient({
+  id: "fs-mcp-client",
+  servers: {
+    filesystem: {
+      command: "npx",
+      args: ["-y", "@modelcontextprotocol/server-filesystem", codePath],
+    },
+  },
+});
 
 export const unitTestAgent = new Agent({
   name: "Unit Test Agent",
@@ -17,14 +31,17 @@ export const unitTestAgent = new Agent({
   - Use mocks and spies (vi.fn, vi.mock) appropriately for external dependencies
   - Keep tests readable, maintainable, and focused on a single responsibility
   - Follow common best practices (arrange–act–assert, descriptive test names)
+  - You have access to filesystem tools to read, write, and manage files as needed for testing
 
   When providing code:
   - Output complete, runnable test examples
   - Use modern React patterns (hooks, function components)
   - Assume a Vite + React + Vitest setup unless stated otherwise
   - Explain non-obvious testing decisions briefly and clearly
+  - Use filesystem tools to read source files when needed to understand the code structure
 
   Help the user gain confidence that their React code works as expected.
 `,
   model: "openai/gpt-4o-mini",
+  tools: await mcp.getTools(),
 });
