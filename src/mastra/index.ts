@@ -9,6 +9,7 @@ import {
   translationScorer,
 } from "./scorers/weather-scorer";
 import { unitTestAgent } from "./agents/unit-test-agent";
+import { testMcpServer } from "./mcp/test-mcp";
 
 export const mastra = new Mastra({
   workflows: { weatherWorkflow },
@@ -33,5 +34,8 @@ export const mastra = new Mastra({
   observability: {
     // Enables DefaultExporter and CloudExporter for AI tracing
     default: { enabled: true },
+  },
+  mcpServers: {
+    test: testMcpServer,
   },
 });
