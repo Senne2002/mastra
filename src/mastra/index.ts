@@ -1,24 +1,10 @@
 import { Mastra } from "@mastra/core/mastra";
 import { PinoLogger } from "@mastra/loggers";
 import { LibSQLStore } from "@mastra/libsql";
-import { weatherWorkflow } from "./workflows/weather-workflow";
-import { weatherAgent } from "./agents/weather-agent";
-import {
-  toolCallAppropriatenessScorer,
-  completenessScorer,
-  translationScorer,
-} from "./scorers/weather-scorer";
-import { unitTestAgent } from "./agents/unit-test-agent";
+
 import { testMcpServer } from "./mcp/test-mcp";
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow },
-  agents: { weatherAgent, unitTestAgent },
-  scorers: {
-    toolCallAppropriatenessScorer,
-    completenessScorer,
-    translationScorer,
-  },
   storage: new LibSQLStore({
     // stores observability, scores, ... into memory storage, if it needs to persist, change to file:../mastra.db
     url: ":memory:",
@@ -36,6 +22,6 @@ export const mastra = new Mastra({
     default: { enabled: true },
   },
   mcpServers: {
-    test: testMcpServer,
+    testMcpServer: testMcpServer,
   },
 });
