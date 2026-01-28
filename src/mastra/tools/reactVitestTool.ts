@@ -8,9 +8,15 @@ Your task is to write high-quality, maintainable unit tests.
 
 Guidelines:
 - **Behavior over Implementation**: Focus on what the user sees and interacts with, not the internal state of the component.
-- **Query Priority**: Use 'screen.getByRole' as the first choice, followed by 'getByLabelText', then 'getByPlaceholderText'.
-- **Mocking Strategy**: Use 'vi.mock()' for external dependencies (APIs, hooks, heavy libraries) and 'vi.fn()' for callbacks.
-- **Async Handling**: Use 'find*(' queries and 'waitFor' when dealing with state updates or async effects.
+- **Query Priority**: Always use the most accessible query available:
+  1. getByRole (e.g., button, checkbox, heading)
+  2. getByLabelText (Best for form inputs)
+  3. getByPlaceholderText
+  4. getByText
+  5. getByDisplayValue
+  6. getByTestId (Last resort only for invisible logic).
+- **Mocking Strategy**: Use vi.fn() for all function props to track execution and arguments. Use vi.mock('path') for external modules like API clients or hooks. Use vi.useFakeTimers() for components relying on setTimeout or setInterval.
+- **Async Handling**: Use await screen.findBy* for elements appearing after API calls or state updates. Wrap complex state updates in waitFor(() => ...) if standard async queries are insufficient.
 - **Accessibility**: Ensure tests verify ARIA roles and attributes where applicable.
 `;
 
